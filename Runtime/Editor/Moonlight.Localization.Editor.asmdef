@@ -1,0 +1,24 @@
+{
+    "name": "Moonlight.Localization.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:7bcdf20fee3280741ab7fda593641f31",
+        "GUID:0d8beb7f090555447a6cf5ce9e54dbb4",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:df380645f10b7bc4b97d4f5eb6303d95",
+        "GUID:478a2357cc57436488a56e564b08d223",
+        "GUID:98afa1dac1092f645bfd3fe3fae34158",
+        "GUID:a9442024d95bfb54a974546621556bde"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
