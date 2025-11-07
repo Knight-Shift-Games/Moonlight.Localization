@@ -15,7 +15,6 @@ namespace Moonlight.Localization
         private string defaultLanguage = "en";
 
         [Header("Localization Data")]
-        // We replace the TextAsset with a string path, using Odin's FilePath attribute for a clean inspector.
         [SerializeField, FilePath(Extensions = ".tsv", RequireExistingPath = true)]
         private string localizationFilePath;
 
@@ -25,7 +24,6 @@ namespace Moonlight.Localization
         
         private void OnEnable()
         {
-            // Ensure data is loaded when the config is first accessed in the editor.
             if (localizedStrings.Count == 0)
             {
                 LoadLocalizationDataForLanguage(CurrentLanguage);

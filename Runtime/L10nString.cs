@@ -18,6 +18,7 @@ namespace Moonlight.Localization
         [SerializeField, TextArea(2, 10), HideLabel] private string _localizedValue;
 
         [SerializeField] private Dictionary<string, IValueGetter> Getters = new();
+        private bool _initialized;
 
         public L10nString()
         {
@@ -39,7 +40,6 @@ namespace Moonlight.Localization
             this._localizedValue = value;
         }
 
-        private bool _initialized;
         private void EnsureInitialized()
         {
             if (_initialized) return;
