@@ -12,10 +12,17 @@ namespace Moonlight.Localization
     [Serializable, InlineProperty, HideLabel, HideReferenceObjectPicker]
     public class L10nString
     {
-        [SerializeField, OnValueChanged("ValueChanged"), HorizontalGroup("1", Title = "@$property.Parent.NiceName", Width = 50), 
-         HideLabel, OnStateUpdate("StateUpdate"), OnInspectorInit("InspectorInit"), ValueDropdown("@Language.SupportedLanguages")] private string _lang;
-        [SerializeField, HorizontalGroup("1"), HideLabel] private string _key;
-        [SerializeField, TextArea(2, 10), HideLabel] private string _localizedValue;
+        [SerializeField, OnValueChanged("ValueChanged"),
+         HorizontalGroup("1", Title = "@$property.Parent.NiceName", Width = 50),
+         HideLabel, OnStateUpdate("StateUpdate"), OnInspectorInit("InspectorInit"),
+         ValueDropdown("@Language.SupportedLanguages")]
+        private string _lang;
+
+        [SerializeField, HorizontalGroup("1"), HideLabel]
+        private string _key;
+
+        [SerializeField, TextArea(2, 10), HideLabel]
+        private string _localizedValue;
 
         [SerializeField] private Dictionary<string, IValueGetter> Getters = new();
         private bool _initialized;
@@ -26,7 +33,7 @@ namespace Moonlight.Localization
             this._key = Guid.NewGuid().ToString();
             _localizedValue = "";
         }
-        
+
         public L10nString(string key)
         {
             _lang = Language.English;
@@ -58,7 +65,8 @@ namespace Moonlight.Localization
 
             _initialized = true;
         }
-        
+
+#if UNITY_EDITOR
         // This button will only appear if the key does not already exist in the localization file.
         [Button("Add to Sheet"), ShowIf("@!KeyExistsInSheet()"), GUIColor(0f, 1f, 0.6f)]
         public void AddToLocSheet()
@@ -70,7 +78,8 @@ namespace Moonlight.Localization
 
             if (sourceLangIndex == -1)
             {
-                EditorUtility.DisplayDialog("Error", $"Language '{_lang}' not found in the TSV header. Cannot add new entry.", "OK");
+                EditorUtility.DisplayDialog("Error",
+                    $"Language '{_lang}' not found in the TSV header. Cannot add new entry.", "OK");
                 return;
             }
 
@@ -84,11 +93,11 @@ namespace Moonlight.Localization
 
             AssetDatabase.Refresh();
             EditorUtility.DisplayDialog("Success", $"Successfully added key '{_key}' to the localization sheet.", "OK");
-            
+
             // Force the config to reload to reflect the change immediately.
             LocalizationConfig.Instance.LoadLocalizationDataForLanguage(_lang);
         }
-        
+#endif
         private void InspectorInit()
         {
             EnsureInitialized();
@@ -97,7 +106,6 @@ namespace Moonlight.Localization
         [Button, ShowIf("@_localizedValue != LocalizationConfig.Instance.GetLocalizedString(_key, _localizedValue)")]
         private void UpdateSourceText()
         {
-            
         }
 
         [Button]
@@ -105,32 +113,32 @@ namespace Moonlight.Localization
         {
             Debug.Log(Localized());
         }
-        
+
         private void ValueChanged()
         {
             EnsureInitialized();
-            
+
             if (LocalizationConfig.Instance.CurrentLanguage != _lang)
             {
                 LocalizationConfig.Instance.CurrentLanguage = _lang;
                 LocalizationConfig.Instance.LoadLocalizationDataForLanguage(_lang);
             }
-            
+
             _localizedValue = LocalizationConfig.Instance.GetLocalizedString(_key, _localizedValue);
         }
-        
+
         private void StateUpdate()
         {
             EnsureInitialized();
             _lang = LocalizationConfig.Instance.CurrentLanguage;
             _localizedValue = LocalizationConfig.Instance.GetLocalizedString(_key, _localizedValue);
         }
-        
+
         private bool KeyExistsInSheet()
         {
             return LocalizationConfig.Instance.DoesKeyExist(_key);
         }
-        
+
         /// <summary>
         /// Retrieves the localized string from the LocalizationManager.
         /// </summary>
@@ -151,7 +159,7 @@ namespace Moonlight.Localization
             {
                 localizedString = localizedString.Replace($"{{{valueGetter.Key}}}", valueGetter.Value.GetValue());
             }
-            
+
             return localizedString;
         }
 
